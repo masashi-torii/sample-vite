@@ -7,7 +7,7 @@ export const App = () => {
   const [count, setCount] = useState(0)
 
   // 配列で初期化する
-  　const [records, setRecords] = useState([]);
+  const [records, setRecords] = useState([]);
 
   // 内容への入力したものを表示していくための状態を保存する
   const [inputNaiyoValue, setInputNaiyoValue] = useState("");
@@ -17,6 +17,12 @@ export const App = () => {
 
   // 記録を追加する
   const addRecord = () => {
+    if(inputNaiyoValue == "" || inputTimeValue == ""){
+      setError(true);
+    }else{
+      setError(false);
+    }
+    
     if(inputNaiyoValue && inputTimeValue){
       const newRecord = {
         title:inputNaiyoValue,
@@ -30,8 +36,6 @@ export const App = () => {
     }
   }
 
-
-
   // 学習内容の入力値が変更されると呼び出される
   const onChangeInputNaiyo = (event) => {
     // 入力値を設定
@@ -44,9 +48,15 @@ export const App = () => {
     setInputTimeValue(event.target.value);
   }
 
+  // エラーを追加する
+  const [error, setError] = useState("");
+
   return (
     <>
     <h1>学習記録一覧</h1>
+    {error && (<p style={{ color: "red" }}>入力されていない項目があります！</p>)}
+    
+   
     <div>学習内容：
     <input input="formNaiyo" type="text" name="naiyo" value={inputNaiyoValue} onChange={onChangeInputNaiyo}></input></div>
     <div>　　学習時間：
@@ -62,6 +72,7 @@ export const App = () => {
     </ul>
     ))}
     </div>
+    <p>合計時間： /1000(h)</p>
     </>
     )
 }
