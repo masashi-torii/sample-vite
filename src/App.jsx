@@ -15,6 +15,9 @@ export const App = () => {
   // 学習時間への入力したものを表示していくための状態を保存する
   const [inputTimeValue, setInputTimeValue] = useState("");
 
+  // 累計時間を追加する
+  const [sumTime, setSumTime] = useState("");
+
   // 記録を追加する
   const addRecord = () => {
     if(inputNaiyoValue == "" || inputTimeValue == ""){
@@ -26,9 +29,14 @@ export const App = () => {
     if(inputNaiyoValue && inputTimeValue){
       const newRecord = {
         title:inputNaiyoValue,
-        time:inputTimeValue
+        time:parseInt(inputTimeValue)
       }
       setRecords([...records, newRecord]);
+
+      // 累計時間を算出
+      const newRecords = [...records, newRecord];
+      const sumTime = newRecords.reduce((total, record) => total + record.time, 0);
+      setSumTime(sumTime);
 
       // 入力フィールドをクリア
       setInputNaiyoValue("");
@@ -56,7 +64,6 @@ export const App = () => {
     <h1>学習記録一覧</h1>
     {error && (<p style={{ color: "red" }}>入力されていない項目があります！</p>)}
     
-   
     <div>学習内容：
     <input input="formNaiyo" type="text" name="naiyo" value={inputNaiyoValue} onChange={onChangeInputNaiyo}></input></div>
     <div>　　学習時間：
@@ -72,7 +79,7 @@ export const App = () => {
     </ul>
     ))}
     </div>
-    <p>合計時間： /1000(h)</p>
+    <p>合計時間： {sumTime}/1000(h)</p>
     </>
     )
 }
